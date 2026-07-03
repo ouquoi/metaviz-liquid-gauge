@@ -42,7 +42,7 @@ export function LiquidGauge({
       : Math.max(0, Math.min(1, (rawValue - min) / (max - min)));
 
   const isDark = colorScheme === "dark";
-  const fillColor = isDark ? "#FF33BB" : "#5F016F";
+  const fillColor = settings.fillColor ?? "#5F016F";
   const bgFill    = isDark ? "#241830" : "#f3eef6";
   const textColor = isDark ? "#aaa"    : "#666";
 

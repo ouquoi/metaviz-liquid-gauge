@@ -1,11 +1,7 @@
 import { type CreateCustomVisualization, defineConfig } from "@metabase/custom-viz";
 import { LiquidGauge } from "./LiquidGauge";
 import type { Settings } from "./types";
-
-function isNumericCol(c: { base_type?: string; effective_type?: string }): boolean {
-  const t = c.base_type ?? c.effective_type ?? "";
-  return /Integer|Float|Decimal|Number|BigInteger/i.test(t);
-}
+import { isNumericCol } from "./utils";
 
 const createVisualization: CreateCustomVisualization<Settings> = ({ defineSetting }) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,8 +16,7 @@ const createVisualization: CreateCustomVisualization<Settings> = ({ defineSettin
     checkRenderable(series) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const cols = (series?.[0]?.data?.cols ?? []) as any[];
-      const numeric = cols.filter(isNumericCol);
-      if (numeric.length === 0) {
+      if (!cols.some(isNumericCol)) {
         throw new Error("Liquid Gauge requires at least one numeric column (the value to display).");
       }
     },
@@ -52,6 +47,14 @@ const createVisualization: CreateCustomVisualization<Settings> = ({ defineSettin
       }),
 
       // ── Appearance ────────────────────────────────────────────────────
+      fillColor: defineSetting({
+        id: "fillColor",
+        title: "Fill color",
+        widget: "color",
+        getSection() { return "Appearance"; },
+        getDefault() { return "#5F016F"; },
+      }),
+
       minValue: ds({
         id: "minValue",
         title: "Min",
