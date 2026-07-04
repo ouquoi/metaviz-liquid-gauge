@@ -1,5 +1,5 @@
 import { useId, useEffect, useRef, useMemo, useState } from "react";
-import type { VisualizationProps } from "@metabase/custom-viz";
+import type { CustomVisualizationProps } from "@metabase/custom-viz";
 import type { Settings } from "./types";
 
 const PI = Math.PI;
@@ -21,7 +21,7 @@ function colIdx(cols: { name: string }[], name: string): number {
 
 export function LiquidGauge({
   series, settings, width, height, colorScheme,
-}: VisualizationProps<Settings>) {
+}: CustomVisualizationProps<Settings>) {
   const cw = (width ?? 0) > 0 ? Math.floor(width ?? 0) : 0;
   const ch = (height ?? 0) > 0 ? Math.floor(height ?? 0) : 0;
   if (!cw || !ch) return null;
